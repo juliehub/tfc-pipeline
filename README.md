@@ -1,2 +1,2 @@
 # tfc-pipeline
-This repository builds pipeline in AWS
+This repository builds a pipeline in AWS
