@@ -1,12 +1,3 @@
-# Terraform configuration
-terraform {
-  required_providers {
-    aws = {
-      source = "hashicorp/aws"
-    }
-  }
-}
-
 provider "aws" {
   region = "ap-southeast-2"
   shared_credentials_file = "~/.aws/config"
@@ -34,12 +25,23 @@ module "ec2_instances" {
   version = "2.12.0"
 
   name           = "my-ec2-cluster"
-  instance_count = 2
+  instance_count = 1
 
   ami                    = "ami-05c029a4b57edda9e"
   instance_type          = "t2.micro"
   vpc_security_group_ids = [module.vpc.default_security_group_id]
   subnet_id              = module.vpc.public_subnets[0]
+
+  tags = {
+    Terraform   = "true"
+    Environment = "dev"
+  }
+}
+
+module "website_s3_bucket" {
+  source = "./modules/aws-s3-static-website-bucket"
+
+  bucket_name = "julie-test-2021-11"
 
   tags = {
     Terraform   = "true"
